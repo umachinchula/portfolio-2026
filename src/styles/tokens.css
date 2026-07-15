@@ -1,0 +1,231 @@
+/* =============================================================================
+   Design Tokens — My Portfolio 2026
+   Source of truth: Figma "My Portfolio 2026" (LdccAHQ3avalSBOVeb6uH2)
+   Pulled from Figma color + text variables. Do NOT hardcode values in
+   components — reference these tokens (Tailwind utilities or var(--…)).
+
+   Stack: Tailwind CSS v4 (CSS-first @theme). Import this file once:
+     @import "tailwindcss";
+     @import "./styles/tokens.css";
+   ============================================================================= */
+
+/* -----------------------------------------------------------------------------
+   1. THEME TOKENS (Tailwind v4) — generate utilities like bg-cod-gray,
+   text-h3, font-sans, tracking-tight-2, etc.
+   -------------------------------------------------------------------------- */
+@theme {
+  /* ---- Font families ---- */
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;      /* Font 1 */
+  --font-serif: "Abyssinica SIL", ui-serif, Georgia, serif;        /* Font 2 */
+  --font-condensed: "News Cycle", ui-sans-serif, sans-serif;       /* Font 3 */
+
+  /* ---- Font weights ---- */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* ---- Primitive palette ---- */
+  --color-cod-gray: #151515;
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-orange-white: #fef9ed;
+  --color-island-spice: #fffaed;
+  --color-candy-corn: #fbe154;   /* yellow accent */
+  --color-malachite: #1cc039;    /* green accent  */
+  --color-pink: #fec3d6;
+  --color-tundora: #404040;      /* grey-25 */
+  --color-dusty-gray: #999999;   /* grey-60 */
+  --color-primary: #00ffb7;      /* Primary/400 — brand mint */
+  --color-accent-green: #00b67a; /* accent-02 */
+
+  /* ---- Alpha variants ---- */
+  --color-white-5: #ffffff0d;
+  --color-white-20: #ffffff33;
+  --color-white-36: #ffffff5c;
+  --color-white-40: #ffffff66;
+  --color-white-60: #ffffff99;
+  --color-cod-gray-5: #1515150d;
+  --color-cod-gray-30: #1515154d;
+  --color-orange-white-15: #fef9ed26;
+  --color-orange-white-20: #fef9ed33;
+  --color-orange-white-40: #fef9ed66;
+  --color-island-spice-7: #fffaed12;
+  --color-black-20: #00000033;
+  --color-black-50: #00000080;
+  --color-black-80: #000000cc;
+  --color-black-88: #000000e0;
+
+  /* ---- Type scale (px → rem @16) ---- */
+  --text-2xs: 0.594rem;   /* 9.5  — Heading 6 */
+  --text-xs: 0.75rem;     /* 12   */
+  --text-sm: 0.875rem;    /* 14   */
+  --text-base: 1rem;      /* 16   */
+  --text-md: 1.075rem;    /* 17.2 — Heading 5 */
+  --text-lg: 1.125rem;    /* 18   */
+  --text-xl: 1.25rem;     /* 20   — Heading 4 */
+  --text-2xl: 1.5rem;     /* 24   — Item */
+  --text-3xl: 1.75rem;    /* 28   */
+  --text-4xl: 2.113rem;   /* 33.8 — Heading 3 */
+  --text-5xl: 3.681rem;   /* 58.9 — Heading 2 */
+
+  /* ---- Letter spacing (px) ---- */
+  --tracking-tightest: -4.2px;
+  --tracking-tighter: -2px;
+  --tracking-tight-15: -1.5px;
+  --tracking-tight-144: -1.44px;
+  --tracking-tight-096: -0.96px;
+  --tracking-tight-072: -0.72px;
+  --tracking-tight-06: -0.6px;
+  --tracking-tight-05: -0.5px;
+  --tracking-tight-04: -0.4px;
+  --tracking-tight-02: -0.2px;
+  --tracking-normal: 0px;
+
+  /* ---- Spacing scale ---- */
+  --spacing-xxxs: 2px;
+  --spacing-xxs: 4px;
+  --spacing-1: 6px;
+  --spacing-2: 8px;
+  --spacing-3: 10px;
+  --spacing-m: 32px;
+  --spacing-xl: 64px;
+
+  /* ---- Border / stroke weights ---- */
+  --border-width-hairline: 0.75px;
+  --border-width-thin: 1px;
+  --border-width-thick: 1.5px;
+
+  /* ---- Radius ---- */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+}
+
+/* -----------------------------------------------------------------------------
+   2. SEMANTIC TOKENS — dark is the design's native mode (dark-only).
+   Names mirror the Figma semantic color variables exactly.
+   -------------------------------------------------------------------------- */
+:root,
+:root[data-theme="dark"] {
+  /* Backgrounds */
+  --bg-primary: var(--color-cod-gray);   /* #151515 — Figma bg-primary   */
+  --bg-secondary: var(--color-tundora);  /* #404040 — Figma bg-secondary */
+  --bg-inverse: var(--color-white);      /* #ffffff — Figma bg-inverse   */
+
+  /* Text */
+  --text-primary: var(--color-orange-white); /* #fef9ed — Figma text-primary   */
+  --text-secondary: var(--color-white-60);   /* #ffffff99 — Figma text-secondary */
+  --text-inverse: var(--color-cod-gray);     /* #151515 — Figma text-inverse   */
+
+  /* Borders */
+  --border-default: var(--color-white-20);   /* #ffffff33 — Figma border-default  */
+  --border-hairline: var(--color-white-5);   /* #ffffff0d — Figma border-hairline */
+
+  /* Accents */
+  --accent: var(--color-primary);        /* #00ffb7 — Primary/400 (brand)    */
+  --accent-green: var(--color-accent-green); /* #00b67a — accent-02          */
+  --cta: var(--color-candy-corn);        /* #fbe154 — Candy Corn (CTA yellow) */
+  --neutral-white: var(--color-white);   /* #ffffff — Neutral/50             */
+}
+
+/* Expose semantic tokens to Tailwind as utilities (bg-primary, text-secondary, …) */
+@theme inline {
+  --color-bg-primary: var(--bg-primary);
+  --color-bg-secondary: var(--bg-secondary);
+  --color-bg-inverse: var(--bg-inverse);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-inverse: var(--text-inverse);
+  --color-border-default: var(--border-default);
+  --color-border-hairline: var(--border-hairline);
+  --color-accent: var(--accent);
+  --color-cta: var(--cta);
+}
+
+/* -----------------------------------------------------------------------------
+   3. TEXT STYLE UTILITIES — the "Semantic" text styles from Figma, as
+   composable classes. Use these instead of restacking font props by hand.
+   -------------------------------------------------------------------------- */
+@layer components {
+  .text-h2 {                         /* Heading 2 (upper) */
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--text-5xl);
+    line-height: 60px;
+    letter-spacing: var(--tracking-tightest);
+  }
+  .text-h3 {
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--text-4xl);
+    line-height: 39.6px;
+    letter-spacing: var(--tracking-tighter);
+  }
+  .text-h4 {
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--text-xl);
+    line-height: 24px;
+    letter-spacing: var(--tracking-tight-15);
+  }
+  .text-h5 {
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--text-md);
+    line-height: 19.8px;
+    letter-spacing: var(--tracking-tight-06);
+  }
+  .text-h6 {                         /* small uppercase eyebrow/label */
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-medium);
+    font-size: var(--text-2xs);
+    line-height: 12px;
+    letter-spacing: var(--tracking-tight-04);
+    text-transform: uppercase;
+  }
+  .text-item {
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-regular);
+    font-size: var(--text-2xl);
+    line-height: 28.8px;
+    letter-spacing: var(--tracking-tight-144);
+  }
+  .text-strong {
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-bold);
+    font-size: 13.7px;
+    line-height: 16.8px;
+    letter-spacing: var(--tracking-tight-04);
+  }
+  .text-button {
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--text-sm);
+    line-height: 16.8px;
+    letter-spacing: var(--tracking-normal);
+  }
+  .text-link {
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-regular);
+    font-size: 13.9px;
+    line-height: 16.8px;
+    letter-spacing: var(--tracking-tight-04);
+  }
+  .text-medium-upper {
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-medium);
+    font-size: var(--text-base);
+    line-height: 19.2px;
+    letter-spacing: var(--tracking-tight-096);
+    text-transform: uppercase;
+  }
+  .text-body {                       /* Options / Input / Textarea base */
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-regular);
+    font-size: var(--text-sm);
+    line-height: 16.8px;
+    letter-spacing: var(--tracking-normal);
+  }
+}

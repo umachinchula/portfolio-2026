@@ -1,0 +1,77 @@
+@import "tailwindcss";
+@import "./styles/tokens.css";
+
+html,
+body {
+  min-height: 100%;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Lenis smooth-scroll recommended styles */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* Full viewport height with mobile dvh fallback (toolbar-safe) */
+.min-h-dvh {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* Scroll-triggered reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.9s cubic-bezier(0.2, 0.65, 0.25, 1),
+    transform 0.9s cubic-bezier(0.2, 0.65, 0.25, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* Highlight helpers: accent (yellow) for works-card claims, white for project-body emphasis */
+.hl-accent {
+  color: var(--cta);
+}
+.hl-white {
+  color: #fff;
+  font-weight: 500;
+}
+
+/* Hero scroll-down chevron nudge */
+@keyframes nudge-down {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(3px);
+  }
+}
+.animate-nudge {
+  animation: nudge-down 1.6s ease-in-out infinite;
+}
