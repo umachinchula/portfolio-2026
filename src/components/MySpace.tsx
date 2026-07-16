@@ -20,16 +20,22 @@ const ITEMS = [
     id: "{01}",
     title: "My all time fav albums are here",
     body: (
-      <div className="flex justify-end gap-3 px-6 pb-6 pt-2">
+      // Mobile: covers stack vertically, one full-width per row; md+ keeps the
+      // original horizontal right-aligned strip.
+      <div className="flex flex-col gap-3 px-6 pb-6 pt-2 md:flex-row md:justify-end">
         {ALBUMS.map((a) => (
           <a
             key={a.img}
             href={a.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="transition-transform duration-300 hover:-translate-y-1"
+            className="w-full transition-transform duration-300 hover:-translate-y-1 md:w-auto"
           >
-            <img src={a.img} alt="Favorite album on Spotify" className="size-40 object-cover" />
+            <img
+              src={a.img}
+              alt="Favorite album on Spotify"
+              className="aspect-square w-full object-cover md:size-40"
+            />
           </a>
         ))}
       </div>
@@ -37,32 +43,49 @@ const ITEMS = [
   },
   {
     id: "{02}",
-    title: "Miss you a lot - a mini short story",
+    title: "The Words I Never Said",
     body: (
-      <p className="max-w-[640px] px-6 pb-6 pt-2 text-[15px] leading-6" style={{ color: "rgba(21,21,21,0.75)" }}>
-        Some stories don't need endings — they just need a place to sit for a
-        while. This one lives here, between songs and bookmarks.
-      </p>
+      <div className="flex flex-col gap-3 px-6 pb-6 pt-2">
+        <p className="max-w-[640px] text-[15px] leading-6" style={{ color: "rgba(21,21,21,0.75)" }}>
+          A collection of unspoken feelings from a man who loved deeply, but
+          never knew how to say them. Some stories are louder in silence than
+          they ever are in words.
+        </p>
+        <span className="text-h6" style={{ color: "rgba(21,21,21,0.5)" }}>
+          Full stories out soon
+        </span>
+      </div>
     ),
   },
   {
     id: "{03}",
-    title: "Things are different - a mini short story",
+    title: "When Love Changed Direction",
     body: (
-      <p className="max-w-[640px] px-6 pb-6 pt-2 text-[15px] leading-6" style={{ color: "rgba(21,21,21,0.75)" }}>
-        Change never announces itself. It shows up quietly, rearranges the
-        furniture, and waits for you to notice.
-      </p>
+      <div className="flex flex-col gap-3 px-6 pb-6 pt-2">
+        <p className="max-w-[640px] text-[15px] leading-6" style={{ color: "rgba(21,21,21,0.75)" }}>
+          The goal was no longer to have her. The goal became becoming the kind
+          of man who could give her the life she deserved — even if that life
+          didn't include him.
+        </p>
+        <span className="text-h6" style={{ color: "rgba(21,21,21,0.5)" }}>
+          Full stories out soon
+        </span>
+      </div>
     ),
   },
   {
     id: "{04}",
-    title: "Our two different worlds - a mini short story",
+    title: "Different Skies",
     body: (
-      <p className="max-w-[640px] px-6 pb-6 pt-2 text-[15px] leading-6" style={{ color: "rgba(21,21,21,0.75)" }}>
-        Two orbits, one gravity. A short story about distance that never quite
-        felt like distance.
-      </p>
+      <div className="flex flex-col gap-3 px-6 pb-6 pt-2">
+        <p className="max-w-[640px] text-[15px] leading-6" style={{ color: "rgba(21,21,21,0.75)" }}>
+          They loved under the same sky, but lived beneath different realities.
+          One carried comfort. The other carried responsibility.
+        </p>
+        <span className="text-h6" style={{ color: "rgba(21,21,21,0.5)" }}>
+          Full stories out soon
+        </span>
+      </div>
     ),
   },
 ];
@@ -87,18 +110,20 @@ function Row({
           borderBottom: "1px solid rgba(21,21,21,0.12)",
         }}
       >
-        <button onClick={onToggle} className="flex w-full items-center gap-8 px-6 py-4 text-left">
-          <span className="text-h6 w-10 shrink-0" style={{ color: "rgba(21,21,21,0.6)" }}>
+        {/* Mobile: number left + icon right on the top row, title full-width
+            below. Desktop (md+): original single row — number / title / icon. */}
+        <button onClick={onToggle} className="flex w-full flex-wrap items-center gap-y-3 px-6 py-4 text-left md:flex-nowrap md:gap-8">
+          <span className="text-h6 order-1 w-10 shrink-0" style={{ color: "rgba(21,21,21,0.6)" }}>
             {item.id}
           </span>
           <span
-            className="flex-1"
+            className="order-3 w-full md:order-2 md:w-auto md:flex-1"
             style={{ color: "var(--color-cod-gray)", fontSize: "clamp(20px, 2vw, 28px)", letterSpacing: "-1px", fontWeight: 600 }}
           >
             {item.title}
           </span>
           <span
-            className="flex size-8 shrink-0 items-center justify-center transition-colors duration-300"
+            className="order-2 ml-auto flex size-8 shrink-0 items-center justify-center transition-colors duration-300 md:order-3 md:ml-0"
             style={{ background: open ? "var(--cta)" : "var(--color-cod-gray)" }}
             aria-hidden
           >

@@ -30,14 +30,16 @@ export default function HeroFrame({
   const markColor = tone === "dark" ? "#d9d6cd" : "#151515";
   const guide = tone === "dark" ? "border-white/15" : "border-black/15";
 
-  const mark = (pos: React.CSSProperties, key: string) => (
-    <span key={key} className="absolute z-20 size-[6px]" style={{ background: markColor, ...pos }} />
+  // Marks sit 3px outside the border, which itself sits `padding` in from the
+  // edge — 16px padding on mobile (p-4), 40px on desktop (lg:p-10).
+  const mark = (edges: string, key: string) => (
+    <span key={key} className={`absolute z-20 size-[6px] ${edges}`} style={{ background: markColor }} />
   );
 
   return (
     <section
-      className="relative w-full"
-      style={{ height: "100vh", background: tone === "dark" ? "#000" : "#fff", padding: 40 }}
+      className="h-dvh relative w-full p-4 lg:p-10"
+      style={{ background: tone === "dark" ? "#000" : "#fff" }}
     >
       {/* Bordered inner container */}
       <div
@@ -61,10 +63,10 @@ export default function HeroFrame({
       </div>
 
       {/* Corner marks on the bordered container */}
-      {mark({ top: 37, left: 37 }, "tl")}
-      {mark({ top: 37, right: 37 }, "tr")}
-      {mark({ bottom: 37, left: 37 }, "bl")}
-      {mark({ bottom: 37, right: 37 }, "br")}
+      {mark("top-[13px] left-[13px] lg:top-[37px] lg:left-[37px]", "tl")}
+      {mark("top-[13px] right-[13px] lg:top-[37px] lg:right-[37px]", "tr")}
+      {mark("bottom-[13px] left-[13px] lg:bottom-[37px] lg:left-[37px]", "bl")}
+      {mark("bottom-[13px] right-[13px] lg:bottom-[37px] lg:right-[37px]", "br")}
     </section>
   );
 }

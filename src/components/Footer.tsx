@@ -44,7 +44,7 @@ export default function Footer() {
     }
     if (path !== "/") {
       navigate("/");
-      setTimeout(() => scrollToAnchor(hash), 80);
+      setTimeout(() => scrollToAnchor(hash), 150);
     } else {
       scrollToAnchor(hash);
     }

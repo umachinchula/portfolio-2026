@@ -4,6 +4,11 @@ import SectionHeading from "./SectionHeading";
 import Reveal from "./Reveal";
 import ArrowButton from "./ArrowButton";
 import { getLenis } from "../lib/useLenis";
+import useIsMobile from "../lib/useIsMobile";
+import { applyStickyStack } from "../lib/stickyStack";
+
+/** Sticky offset per row index — smaller on mobile (shorter fixed pill nav). */
+const stickyTopFor = (i: number, mobile: boolean) => (mobile ? 76 + i * 10 : 110 + i * 14);
 
 /* -----------------------------------------------------------------------------
    Personal Case Studies — "(07) //PERSONAL CASE STUDIES.": horizontal rows,
@@ -12,6 +17,7 @@ import { getLenis } from "../lib/useLenis";
 
 type Study = {
   img: string;
+  mobileImg: string;
   category: string;
   date: string;
   title: string;
@@ -21,21 +27,24 @@ type Study = {
 const STUDIES: Study[] = [
   {
     img: "/ref/cs-housing.jpg",
-    category: "PRODUCT THINKING",
+    mobileImg: "/ref/cs-housing-mobile.jpg",
+    category: "UX STRATEGY",
     date: "25 JUNE 2024",
     title: "RENTERS THINK IN COMMUTE ZONES. HOUSING THINKS IN POSTCODES.",
     href: "https://medium.com/@umamahesh.chinchula/renters-think-in-commute-zones-housing-thinks-in-postcodes-8c977aee1634?sharedUserId=umamahesh.chinchula",
   },
   {
     img: "/ref/cs-gpay.jpg",
-    category: "TECH",
+    mobileImg: "/ref/cs-gpay-mobile.jpg",
+    category: "FINTECH UX",
     date: "25 APRIL 2026",
     title: "GPAY SMART SETTLE",
     href: "https://medium.com/@umamahesh.chinchula/gpay-smart-settle-f5ef780ce638?sharedUserId=umamahesh.chinchula",
   },
   {
     img: "/ref/cs-ixigo.jpg",
-    category: "DESIGN",
+    mobileImg: "/ref/cs-ixigo-mobile.jpg",
+    category: "AI PRODUCT DESIGN",
     date: "09 MAY 2025",
     title: "IXIGO AI: FROM INFORMATION TO DECISION",
   },
@@ -49,20 +58,24 @@ function StudyRow({ study, delay }: { study: Study; delay: number }) {
         target={study.href ? "_blank" : undefined}
         rel={study.href ? "noopener noreferrer" : undefined}
         onClick={study.href ? undefined : (e) => e.preventDefault()}
-        className="group relative flex flex-col overflow-hidden md:flex-row"
+        className="group relative flex h-[70dvh] flex-col overflow-hidden md:h-auto md:flex-row"
         style={{ background: "#1a1a19", border: "1px solid rgba(255,255,255,0.06)", boxShadow: "0 -4px 14px rgba(0,0,0,0.18)" }}
       >
-        {/* Artwork */}
-        <div className="relative shrink-0 p-3.5 md:w-[46%]">
-          <img
-            src={study.img}
-            alt={study.title}
-            className="aspect-[475/250] w-full object-cover transition-transform duration-500 group-hover:scale-[1.015]"
-          />
+        {/* Artwork — portrait crop filling the 70dvh card on mobile, landscape
+            crop at its fixed ratio on md+ */}
+        <div className="relative min-h-0 flex-1 p-3.5 md:w-[46%] md:flex-none">
+          <picture className="contents">
+            <source media="(max-width: 767px)" srcSet={study.mobileImg} />
+            <img
+              src={study.img}
+              alt={study.title}
+              className="size-full object-cover transition-transform duration-500 group-hover:scale-[1.015] md:aspect-[475/250] md:h-auto"
+            />
+          </picture>
         </div>
 
-        {/* Copy */}
-        <div className="relative flex flex-1 flex-col justify-between gap-8 p-5">
+        {/* Copy — hugs its content on mobile so the artwork gets the space */}
+        <div className="relative flex shrink-0 flex-col justify-between gap-8 p-5 md:flex-1">
           <div className="flex items-center gap-6">
             <span className="text-h6" style={{ color: "var(--text-secondary)" }}>
               {study.category}
@@ -93,27 +106,14 @@ function StudyRow({ study, delay }: { study: Study; delay: number }) {
 
 export default function PersonalCaseStudies() {
   const rowRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const isMobile = useIsMobile();
 
-  // Stack "flow": a pinned row scales toward 80% as the next row covers it.
+  // Stack "flow" (mobile and desktop): a pinned row scales toward 80% as the
+  // next row slides up to cover it.
   useEffect(() => {
     const onScroll = () => {
-      const rows = rowRefs.current;
-      const desktop = window.innerWidth >= 1024;
-      rows.forEach((el, i) => {
-        if (!el) return;
-        const next = rows[i + 1];
-        if (!desktop || !next) {
-          el.style.transform = "";
-          return;
-        }
-        const stickyTop = 110 + i * 14;
-        const cover = Math.min(
-          1,
-          Math.max(0, (stickyTop + el.offsetHeight - next.getBoundingClientRect().top) / el.offsetHeight)
-        );
-        el.style.transform = `scale(${1 - 0.2 * cover})`;
-        el.style.transformOrigin = "center top";
-      });
+      const mobileNow = window.innerWidth < 1024;
+      applyStickyStack(rowRefs.current, (i) => stickyTopFor(i, mobileNow));
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -155,7 +155,7 @@ export default function PersonalCaseStudies() {
             </Reveal>
           </aside>
 
-          {/* Rows — sticky overlapping stack on desktop */}
+          {/* Rows — sticky overlapping stack on both mobile and desktop */}
           <div className="flex flex-1 flex-col gap-5 px-5 lg:pl-10">
             {STUDIES.map((s, i) => (
               <div
@@ -163,8 +163,8 @@ export default function PersonalCaseStudies() {
                 ref={(el) => {
                   rowRefs.current[i] = el;
                 }}
-                className="lg:sticky"
-                style={{ top: 110 + i * 14 }}
+                className="sticky"
+                style={{ top: stickyTopFor(i, isMobile) }}
               >
                 <StudyRow study={s} delay={i * 70} />
               </div>

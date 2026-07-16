@@ -5,6 +5,11 @@ import Reveal from "./Reveal";
 import ArrowButton from "./ArrowButton";
 import { RouteLink } from "../lib/router";
 import { getLenis } from "../lib/useLenis";
+import useIsMobile from "../lib/useIsMobile";
+import { applyStickyStack } from "../lib/stickyStack";
+
+/** Sticky offset per card index — smaller on mobile (shorter fixed pill nav). */
+const stickyTopFor = (i: number, mobile: boolean) => (mobile ? 76 + i * 10 : 100 + i * 14);
 
 /* -----------------------------------------------------------------------------
    Selected Works — "(03) //SELECTED WORKS OF MINE": filter list in the left
@@ -14,6 +19,7 @@ import { getLenis } from "../lib/useLenis";
 
 type Work = {
   img: string;
+  mobileImg: string;
   alt: string;
   desc: React.ReactNode;
   tags: string[];
@@ -26,6 +32,7 @@ const FILTERS = ["MATCHING", "STATE INDICATORS", "ONBOARDING", "INKWAVE"];
 const WORKS: Work[] = [
   {
     img: "/work/card-matching.jpg",
+    mobileImg: "/work/card-matching-mobile.jpg",
     alt: "Matching — relevance-driven match layer for Pitch40",
     desc: (
       <>
@@ -40,6 +47,7 @@ const WORKS: Work[] = [
   },
   {
     img: "/work/card-state-indicators.jpg",
+    mobileImg: "/work/card-state-indicators-mobile.jpg",
     alt: "State Indicators — state-aware feed for Pitch40",
     desc: (
       <>
@@ -54,6 +62,7 @@ const WORKS: Work[] = [
   },
   {
     img: "/work/card-onboarding.jpg",
+    mobileImg: "/work/card-onboarding-mobile.jpg",
     alt: "Onboarding — publish-first flow for Pitch40",
     desc: (
       <>
@@ -68,6 +77,7 @@ const WORKS: Work[] = [
   },
   {
     img: "/work/card-inkwave.jpg",
+    mobileImg: "/work/card-inkwave-mobile.jpg",
     alt: "Inkwave — publish-first newsletter platform",
     desc: (
       <>
@@ -83,33 +93,41 @@ const WORKS: Work[] = [
 ];
 
 function WorkCard({ work, delay }: { work: Work; delay: number }) {
+  const isMobile = useIsMobile();
+  const media = isMobile ? work.mobileImg : work.img;
   return (
     <Reveal delay={delay}>
       <RouteLink to={`/work/${work.slug}`} className="group block">
         <article
-          className="flex flex-col overflow-hidden rounded-sm"
+          className="flex h-[80dvh] flex-col overflow-hidden rounded-sm lg:h-auto"
           style={{ background: "#151515", boxShadow: "0 -4px 14px rgba(0,0,0,0.18)", border: "1px solid rgba(255,255,255,0.06)" }}
         >
-          {/* Layered media: image as blown-up gray backdrop, sharp inner image centered */}
-          <div className="relative aspect-[1000/446] w-full overflow-hidden">
+          {/* Layered media: image as blown-up gray backdrop, sharp inner image centered.
+              On mobile the whole card is 80% of the viewport height and the media
+              fills whatever the text block doesn't use; desktop keeps its ratio. */}
+          <div className="relative min-h-0 w-full flex-1 overflow-hidden lg:flex-none lg:aspect-[1000/446]">
             <img
-              src={work.img}
+              src={media}
               alt=""
               aria-hidden
               className="absolute inset-0 size-full scale-125 object-cover blur-[3px] grayscale"
             />
             <div className="absolute inset-0" style={{ background: "rgba(21,21,21,0.82)" }} />
             <img
-              src={work.img}
+              src={media}
               alt={work.alt}
               className="absolute left-1/2 top-1/2 h-[76%] w-auto max-w-none -translate-x-1/2 -translate-y-1/2 object-contain shadow-2xl transition-transform duration-500 group-hover:scale-[1.02]"
             />
           </div>
-          <div className="flex flex-col gap-2 px-3 py-3" style={{ background: "#1e1d1a" }}>
-            <p className="text-button" style={{ color: "var(--color-white)" }}>
+          {/* Description and tags read as two distinct groups: 12px between them,
+              tags wrap with an 8px row gap (16px column gap stays for legibility). */}
+          <div className="flex flex-col gap-[12px] px-3 py-3 lg:gap-2" style={{ background: "#1e1d1a" }}>
+            {/* Title — same treatment as the case-study card titles (weight,
+                tracking, line-height), scaled down for the works card format */}
+            <p style={{ color: "#d9d6cd", fontSize: "15px", lineHeight: 1.3, letterSpacing: "-0.2px", fontWeight: 600 }}>
               {work.desc}
             </p>
-            <ul className="flex flex-wrap items-center gap-4">
+            <ul className="flex flex-wrap items-center gap-x-4 gap-y-2">
               {work.tags.map((tag) => (
                 <li key={tag} className="flex items-center gap-1.5">
                   <span className="size-[4px]" style={{ background: "var(--cta)" }} />
@@ -129,36 +147,22 @@ function WorkCard({ work, delay }: { work: Work; delay: number }) {
 export default function SelectedWorks() {
   const [active, setActive] = useState(0);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const isMobile = useIsMobile();
 
   // Keep the sticky sidebar's active option in sync with the card in view,
-  // and drive the stack "flow": a pinned card scales down toward 80% as the
-  // next card slides up to cover it.
+  // and drive the stack "flow" (same effect on mobile and desktop now): a
+  // pinned card scales down toward 80% as the next card slides up to cover it.
   useEffect(() => {
     const onScroll = () => {
       const marker = window.innerHeight * 0.45;
       let current = 0;
       const wrappers = cardRefs.current;
-      const desktop = window.innerWidth >= 1024;
+      const mobileNow = window.innerWidth < 1024;
       wrappers.forEach((el, i) => {
         if (!el) return;
         if (el.getBoundingClientRect().top <= marker) current = i;
-        if (!desktop) {
-          el.style.transform = "";
-          return;
-        }
-        const next = wrappers[i + 1];
-        if (!next) {
-          el.style.transform = "";
-          return;
-        }
-        const stickyTop = 100 + i * 14;
-        const cover = Math.min(
-          1,
-          Math.max(0, (stickyTop + el.offsetHeight - next.getBoundingClientRect().top) / el.offsetHeight)
-        );
-        el.style.transform = `scale(${1 - 0.2 * cover})`;
-        el.style.transformOrigin = "center top";
       });
+      applyStickyStack(wrappers, (i) => stickyTopFor(i, mobileNow));
       setActive(current);
     };
     onScroll();
@@ -225,7 +229,7 @@ export default function SelectedWorks() {
             </Reveal>
           </aside>
 
-          {/* Cards — sticky overlapping stack on desktop */}
+          {/* Cards — sticky overlapping stack on both mobile and desktop */}
           <div className="flex flex-1 flex-col gap-6 px-5 lg:pl-10">
             {WORKS.map((w, i) => (
               <div
@@ -233,8 +237,8 @@ export default function SelectedWorks() {
                 ref={(el) => {
                   cardRefs.current[i] = el;
                 }}
-                className="lg:sticky"
-                style={{ top: 100 + i * 14 }}
+                className="sticky"
+                style={{ top: stickyTopFor(i, isMobile) }}
               >
                 <WorkCard work={w} delay={i * 60} />
               </div>

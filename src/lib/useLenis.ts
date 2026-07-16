@@ -35,13 +35,30 @@ export default function useLenis() {
   }, []);
 }
 
-/** Smooth-scroll to an in-page anchor, falling back to native scrolling. */
+/**
+ * Smooth-scroll to an in-page anchor, falling back to native scrolling.
+ *
+ * Lenis caches the page's scrollable height ("limit") and only recomputes it
+ * on its own resize observer tick. Right after a route change, the new
+ * page's layout (large sections, images) can still be settling when we
+ * measure, so a single resize()+scrollTo can undershoot the real target.
+ * Firing it twice — once immediately, once after layout has had time to
+ * finish — self-corrects without any visible jank (the second call just
+ * nudges Lenis's in-flight animation to the true target).
+ */
 export function scrollToAnchor(hash: string) {
-  const target = document.querySelector(hash);
-  if (!target) return;
-  if (instance) {
-    instance.scrollTo(target as HTMLElement, { offset: -72 });
-  } else {
-    (target as HTMLElement).scrollIntoView({ behavior: "smooth" });
-  }
+  const attempt = () => {
+    const target = document.querySelector(hash);
+    if (!target) return;
+    if (instance) {
+      instance.resize();
+      instance.scrollTo(target as HTMLElement, { offset: -72 });
+    } else {
+      (target as HTMLElement).scrollIntoView({ behavior: "smooth" });
+    }
+  };
+  requestAnimationFrame(() => {
+    attempt();
+    setTimeout(attempt, 400);
+  });
 }

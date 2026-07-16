@@ -85,7 +85,7 @@ export default function Header() {
     if (path !== "/") {
       navigate("/");
       // let the home sections mount before scrolling to the anchor
-      setTimeout(() => scrollToAnchor(hash), 80);
+      setTimeout(() => scrollToAnchor(hash), 150);
     } else {
       scrollToAnchor(hash);
     }
@@ -181,12 +181,12 @@ export default function Header() {
 
     {/* Compact pill nav — always on mobile, on scroll for desktop.
         At the top of the framed heroes on mobile, it sits 16px below the
-        inner frame line (40px frame + 1px border + 16px). */}
+        inner frame line (16px mobile frame padding + 1px border + 16px gap). */}
     <div
       className={`fixed left-1/2 z-50 -translate-x-1/2 transition-all duration-300 ${
         showPill ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-6 opacity-0"
       }`}
-      style={{ top: isMobile && !scrolled && (path === "/" || path === "/about") ? 57 : 20 }}
+      style={{ top: isMobile && !scrolled && (path === "/" || path === "/about") ? 33 : 20 }}
     >
       <div
         className="flex items-center gap-10 rounded-none py-3.5 pl-7 pr-6 shadow-lg"

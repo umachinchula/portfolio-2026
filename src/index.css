@@ -30,6 +30,10 @@ html.lenis body {
   min-height: 100vh;
   min-height: 100dvh;
 }
+.h-dvh {
+  height: 100vh;
+  height: 100dvh;
+}
 
 /* Scroll-triggered reveal */
 .reveal {
