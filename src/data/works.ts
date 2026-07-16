@@ -19,7 +19,7 @@ export type WorkDetail = {
   intro: string;
   client: string;
   timeline: string;
-  services: string[];
+  metrics: { value: string; from?: string; label: string; dir?: "up" | "down" }[];
   media: string;
   liveUrl?: string;
   sections: WorkSection[];
@@ -35,7 +35,11 @@ export const WORK_DETAILS: WorkDetail[] = [
       "Pitch40 is a B2B fundraising platform — a bridge between startups raising money and investors deploying it. Investors browse a feed of startups to evaluate. I own product design. Three weeks, solo, straight to live.",
     client: "PITCH 40",
     timeline: "3 WEEKS",
-    services: ["PRODUCT DESIGN", "UX RESEARCH", "INTERACTION DESIGN"],
+    metrics: [
+      { value: "<5 min", from: "7–15 min", label: "Time to Decide", dir: "down" },
+      { value: "+36%", label: "Investment Decisions", dir: "up" },
+      { value: "$8.9M", from: "$4.7M", label: "Matched Deal Volume", dir: "up" },
+    ],
     media: "/work/matching-media.jpg",
     liveUrl: "https://pitch40.com/",
     sections: [
@@ -87,7 +91,10 @@ export const WORK_DETAILS: WorkDetail[] = [
       "Pitch40 is a B2B fundraising platform — a bridge between startups raising money and investors deploying it. Investors browse a feed of startups to evaluate and act on. I own product design. This shipped alongside the matching work, as part of the same feed redesign.",
     client: "PITCH 40",
     timeline: "1 MONTH",
-    services: ["PRODUCT DESIGN", "INTERACTION DESIGN"],
+    metrics: [
+      { value: "3–5", from: "22–30", label: "Startups Evaluated Per Session", dir: "down" },
+      { value: "4", label: "Auto-Inferred States" },
+    ],
     media: "/work/state-indicators-media.jpg",
     liveUrl: "https://pitch40.com/",
     sections: [
@@ -145,7 +152,10 @@ export const WORK_DETAILS: WorkDetail[] = [
       "Pitch40 is a B2B fundraising platform — a bridge between startups raising money and investors deploying it. Before a startup can be matched, it has to get onto the platform. I own product design. Live product.",
     client: "PITCH 40",
     timeline: "2 MONTHS",
-    services: ["PRODUCT DESIGN", "UX RESEARCH", "FLOW DESIGN"],
+    metrics: [
+      { value: "20 min", from: "2 days", label: "Time to First Match", dir: "down" },
+      { value: "76%", from: "41%", label: "Onboarding Completion", dir: "up" },
+    ],
     media: "/work/onboarding-media.jpg",
     liveUrl: "https://pitch40.com/",
     sections: [
@@ -195,7 +205,11 @@ export const WORK_DETAILS: WorkDetail[] = [
       "Inkwave is a newsletter platform where creators publish and monetize in one place. It started as a single sentence from a CEO — no roadmap, no spec, no wireframes. I owned product design end to end: scope, research, every screen, and the calls that shaped what got built. Solo, 0→1, shipped to a 30-day beta.",
     client: "INKWAVE",
     timeline: "9 MONTHS",
-    services: ["PRODUCT DESIGN", "PRODUCT STRATEGY", "UX RESEARCH", "DESIGN SYSTEM"],
+    metrics: [
+      { value: "24/30", label: "Retained After 30 Days" },
+      { value: "18/30", label: "Monetized in Week 1" },
+      { value: "<5 min", label: "Onboarding Time" },
+    ],
     media: "/work/inkwave-media.jpg",
     sections: [
       {

@@ -1,4 +1,4 @@
-import type { WorkDetail } from "../data/works";
+import { WORK_DETAILS, type WorkDetail } from "../data/works";
 import Reveal from "./Reveal";
 import { RouteLink } from "../lib/router";
 
@@ -34,30 +34,7 @@ function MetaRow({ label, children }: { label: string; children: React.ReactNode
   );
 }
 
-function Chip({ children }: { children: React.ReactNode }) {
-  return (
-    <span
-      className="text-h6 rounded-full px-3 py-1.5"
-      style={{ background: "#242423", color: "var(--text-primary)" }}
-    >
-      {children}
-    </span>
-  );
-}
-
-function YellowBar({ label, arrow, to, href }: { label: string; arrow: string; to?: string; href?: string }) {
-  const inner = (
-    <span className="text-button flex h-[42px] w-full items-center justify-center gap-1.5" style={{ color: "var(--color-cod-gray)" }}>
-      <span aria-hidden>{arrow}</span> {label}
-    </span>
-  );
-  if (to) {
-    return (
-      <RouteLink to={to} className="block w-full transition-opacity hover:opacity-90" style={{ background: "var(--cta)" }}>
-        {inner}
-      </RouteLink>
-    );
-  }
+function YellowBar({ label, arrow, href }: { label: string; arrow: string; href?: string }) {
   return (
     <a
       href={href ?? "#"}
@@ -67,12 +44,48 @@ function YellowBar({ label, arrow, to, href }: { label: string; arrow: string; t
       className="block w-full transition-opacity hover:opacity-90"
       style={{ background: "var(--cta)" }}
     >
-      {inner}
+      <span className="text-button flex h-[42px] w-full items-center justify-center gap-1.5" style={{ color: "var(--color-cod-gray)" }}>
+        <span aria-hidden>{arrow}</span> {label}
+      </span>
     </a>
   );
 }
 
+/* Prev/Next CTA — primary keeps the solid accent-yellow style; secondary is
+   black with a 1px light stroke. Text hides on mobile (icon-only). */
+function NavCta({
+  to,
+  variant,
+  className = "",
+  children,
+}: {
+  to: string;
+  variant: "primary" | "secondary";
+  className?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <RouteLink
+      to={to}
+      className={`text-button flex h-[42px] items-center justify-center gap-1.5 px-6 transition-opacity hover:opacity-90 ${className}`}
+      style={
+        variant === "primary"
+          ? { background: "var(--cta)", color: "var(--color-cod-gray)" }
+          : { background: "#0e0e0d", color: "var(--color-white)", border: "1px solid rgba(255,255,255,0.25)" }
+      }
+    >
+      {children}
+    </RouteLink>
+  );
+}
+
 export default function WorkPage({ work }: { work: WorkDetail }) {
+  // Prev/next derived from the shared works list order — stays correct as
+  // projects are added or reordered.
+  const idx = WORK_DETAILS.findIndex((w) => w.slug === work.slug);
+  const prev = idx > 0 ? WORK_DETAILS[idx - 1] : null;
+  const next = idx >= 0 && idx < WORK_DETAILS.length - 1 ? WORK_DETAILS[idx + 1] : null;
+
   return (
     <section
       className="relative w-full overflow-hidden"
@@ -128,13 +141,30 @@ export default function WorkPage({ work }: { work: WorkDetail }) {
                     {work.timeline}
                   </span>
                 </MetaRow>
-                <MetaRow label="SERVICES">
-                  <div className="flex flex-wrap gap-2">
-                    {work.services.map((s) => (
-                      <Chip key={s}>{s}</Chip>
-                    ))}
-                  </div>
-                </MetaRow>
+                {/* Outcome metrics — value (+ arrow, "(from …)" note) over label */}
+                <div
+                  className="grid grid-cols-2 gap-x-6 gap-y-5 border-t py-5 sm:grid-cols-3"
+                  style={{ borderColor: "var(--border-hairline)" }}
+                >
+                  {work.metrics.map((m) => (
+                    <div key={m.label} className="flex flex-col gap-1.5">
+                      <span
+                        style={{ color: "var(--color-white)", fontSize: "17px", fontWeight: 600, letterSpacing: "-0.3px" }}
+                      >
+                        {m.dir === "down" ? "↓ " : m.dir === "up" ? "↑ " : ""}
+                        {m.value}
+                        {m.from && (
+                          <span className="ml-1.5 text-xs font-normal" style={{ color: "var(--text-secondary)" }}>
+                            (from {m.from})
+                          </span>
+                        )}
+                      </span>
+                      <span className="text-h6" style={{ color: "var(--text-secondary)", textTransform: "none" }}>
+                        {m.label}
+                      </span>
+                    </div>
+                  ))}
+                </div>
               </div>
 
               <div className="mt-4">
@@ -187,10 +217,26 @@ export default function WorkPage({ work }: { work: WorkDetail }) {
           ))}
         </div>
 
-        {/* Back */}
+        {/* Prev/Next project navigation */}
         <div className="mt-4 lg:pl-[340px]">
-          <div className="px-5 lg:px-10">
-            <YellowBar label="BACK TO ALL WORKS" arrow="↵" to="/" />
+          <div className="flex gap-3 px-5 lg:px-10">
+            {prev && (
+              <NavCta to={`/work/${prev.slug}`} variant="secondary" className="shrink-0">
+                <span aria-hidden>←</span>
+                <span className="hidden sm:inline">PREVIOUS PROJECT</span>
+              </NavCta>
+            )}
+            {next ? (
+              <NavCta to={`/work/${next.slug}`} variant="primary" className="flex-1">
+                <span className="hidden sm:inline">NEXT PROJECT</span>
+                <span aria-hidden>→</span>
+              </NavCta>
+            ) : (
+              <NavCta to="/" variant="primary" className="flex-1">
+                <span aria-hidden>←</span>
+                <span className="hidden sm:inline">BACK TO ALL WORKS</span>
+              </NavCta>
+            )}
           </div>
         </div>
       </div>
