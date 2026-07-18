@@ -64,7 +64,7 @@ const ITEMS = [
       <div className="flex flex-col gap-3 px-6 pb-6 pt-2">
         <p className="max-w-[640px] text-[15px] leading-6" style={{ color: "rgba(21,21,21,0.75)" }}>
           The goal was no longer to have her. The goal became becoming the kind
-          of man who could give her the life she deserved — even if that life
+          of man who could give her the life she deserved, even if that life
           didn't include him.
         </p>
         <span className="text-h6" style={{ color: "rgba(21,21,21,0.5)" }}>

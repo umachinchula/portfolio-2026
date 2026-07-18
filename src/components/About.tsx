@@ -13,9 +13,9 @@ import { getLenis } from "../lib/useLenis";
    -------------------------------------------------------------------------- */
 
 const PARA_1 =
-  "I design product experiences for platforms where decisions actually cost something — a B2B fundraising platform where investors evaluate real deals, and a 0→1 creator product built from a single sentence. My approach is research-first: I don't ship a design decision I can't defend with evidence.";
+  "I design product experiences for platforms where decisions actually cost something: a B2B fundraising platform where investors evaluate real deals, and a 0→1 creator product built from a single sentence. My approach is research-first: I don't ship a design decision I can't defend with evidence.";
 const PARA_2 =
-  "Every project starts by finding what's actually broken — not what looks unfinished, but what's quietly costing users time, trust, or money — and ends with a decision I can explain in one sentence.";
+  "Every project starts by finding what's actually broken, not what looks unfinished, but what's quietly costing users time, trust, or money, and ends with a decision I can explain in one sentence.";
 
 const clamp01 = (n: number) => Math.min(1, Math.max(0, n));
 

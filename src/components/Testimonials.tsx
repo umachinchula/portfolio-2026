@@ -19,7 +19,7 @@ const TESTIMONIALS = [
   {
     id: "{01}",
     quote:
-      "Uma doesn't just solve problems—he understands the conflict behind them. He always comes with 2-3 solid alternatives and collaborates seamlessly with devs, understanding our system architecture inside out.",
+      "Uma doesn't just solve problems. He understands the conflict behind them. He always comes with 2-3 solid alternatives and collaborates seamlessly with devs, understanding our system architecture inside out.",
     name: "Md Irfan Habib",
     role: "FOUNDER & CTO, PLUTONAPSS",
     glow: "rgba(251,225,84,0.95)",
@@ -27,7 +27,7 @@ const TESTIMONIALS = [
   {
     id: "{02}",
     quote:
-      "Uma grasps the depth of a problem fast. Working with tight time constraints, he still delivered—and built us a centralized design system we never had before.",
+      "Uma grasps the depth of a problem fast. Working with tight time constraints, he still delivered, and built us a centralized design system we never had before.",
     name: "Sharam",
     role: "PRODUCT MANAGER, IPROTECHS",
     glow: "rgba(254,195,214,0.95)",
@@ -101,7 +101,7 @@ function Card({
 }
 
 export default function Testimonials({
-  blurb = "Every project starts with a conversation and ends with a relationship. Here's what clients have to say about working with me—from first ideas to final launch.",
+  blurb = "Every project starts with a conversation and ends with a relationship. Here's what clients have to say about working with me, from first ideas to final launch.",
   ctaLabel = "LETS CONNECT NOW",
 }: {
   blurb?: string;

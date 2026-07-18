@@ -81,7 +81,7 @@ const WORKS: Work[] = [
     alt: "Inkwave — publish-first newsletter platform",
     desc: (
       <>
-        Build a full product from one sentence — a publish-first newsletter platform that{" "}
+        Build a full product from one sentence: a publish-first newsletter platform that{" "}
         <span className="hl-accent">retained 24 of 30 creators</span> and got{" "}
         <span className="hl-accent">18 of 30 earning in week 1</span>.
       </>

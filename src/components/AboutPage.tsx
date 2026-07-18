@@ -20,7 +20,7 @@ const PRINCIPLES = [
   {
     icon: "/about/icon-1.jpg",
     title: "Design in Code, Not Just Figma",
-    blurb: "Prototypes ship as real, working interfaces — not static mockups waiting on a developer.",
+    blurb: "Prototypes ship as real, working interfaces, not static mockups waiting on a developer.",
   },
   {
     icon: "/about/icon-2.jpg",
@@ -45,7 +45,7 @@ const PRINCIPLES = [
   {
     icon: "/about/icon-6.jpg",
     title: "Systems, Not Screens",
-    blurb: "Every interaction is part of a larger system — I design for how the pieces connect, not just one frame at a time.",
+    blurb: "Every interaction is part of a larger system. I design for how the pieces connect, not just one frame at a time.",
   },
 ];
 
@@ -70,7 +70,7 @@ function StoryHero() {
             //STORY OF UMA MAHESH
           </h1>
           <p className="text-body mt-6 max-w-[52ch]" style={{ color: "rgba(21,21,21,0.85)", lineHeight: "21px", fontSize: "15px" }}>
-            Good design isn't the polish at the end — it's the decisions
+            Good design isn't the polish at the end. It's the decisions
             underneath. I got here from mechanical engineering, not design
             school, which means I default to asking what's actually broken
             before I open Figma. Every screen on this site is the result of a
@@ -106,12 +106,12 @@ function AboutMe() {
           </h2>
           <p className="text-body mt-5 max-w-[520px]" style={{ color: "var(--text-secondary)", lineHeight: "20px" }}>
             I've spent the last two years on a live B2B fundraising platform
-            and a 0→1 creator product — one optimizing decisions that already
+            and a 0→1 creator product: one optimizing decisions that already
             had users and money on the line, the other defining a product from
             a single sentence with no spec at all. Both taught me the same
             lesson: the design that survives contact with real users is the one
             built on evidence, not instinct. I design in Figma, then ship it
-            myself in code — so nothing I hand off is a guess about how it'll
+            myself in code, so nothing I hand off is a guess about how it'll
             actually feel.
           </p>
         </Reveal>
